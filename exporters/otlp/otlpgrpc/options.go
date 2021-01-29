@@ -68,6 +68,7 @@ type config struct {
 	dialOptions        []grpc.DialOption
 	headers            map[string]string
 	clientCredentials  credentials.TransportCredentials
+	logFn func(string, ...interface{})
 }
 
 // Option applies an option to the gRPC driver.
@@ -141,5 +142,13 @@ func WithServiceConfig(serviceConfig string) Option {
 func WithDialOption(opts ...grpc.DialOption) Option {
 	return func(cfg *config) {
 		cfg.dialOptions = opts
+	}
+}
+
+// WithLogFn provides a logging function that provides some visibility into grpc client behavior,
+// e.g. whether it's connected or not connected (and why).
+func WithLogFn(logFn func(string, ...interface{})) Option {
+	return func(cfg *config) {
+		cfg.logFn = logFn
 	}
 }

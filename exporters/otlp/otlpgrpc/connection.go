@@ -94,6 +94,7 @@ func (c *connection) saveLastConnectError(err error) {
 }
 
 func (c *connection) setStateDisconnected(err error) {
+	c.cfg.logFn("setStateDisconnected", err)
 	c.saveLastConnectError(err)
 	select {
 	case c.disconnectedCh <- true:
@@ -103,6 +104,7 @@ func (c *connection) setStateDisconnected(err error) {
 }
 
 func (c *connection) setStateConnected() {
+	c.cfg.logFn("setStateConnected")
 	c.saveLastConnectError(nil)
 }
 
