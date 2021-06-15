@@ -60,11 +60,6 @@ type ReadOnlySpan interface {
 	InstrumentationLibrary() instrumentation.Library
 	Resource() *resource.Resource
 	Snapshot() *export.SpanSnapshot
-
-	// A private method to prevent users implementing the
-	// interface and so future additions to it will not
-	// violate compatibility.
-	private()
 }
 
 // ReadWriteSpan exposes the same methods as trace.Span and in addition allows
@@ -74,7 +69,7 @@ type ReadOnlySpan interface {
 // information should be added under trace.Span or ReadOnlySpan, respectively.
 type ReadWriteSpan interface {
 	trace.Span
-	ReadOnlySpan
+	//ReadOnlySpan
 }
 
 var emptySpanContext = trace.SpanContext{}
@@ -509,8 +504,6 @@ func (s *span) addChild() {
 func (s *span) addDroppedAttributeCount(delta int) {
 	atomic.AddInt64(&s.droppedAttributeCount, int64(delta))
 }
-
-func (*span) private() {}
 
 func startSpanInternal(ctx context.Context, tr *tracer, name string, parent trace.SpanContext, remoteParent bool, o *trace.SpanConfig) *span {
 	span := &span{}
